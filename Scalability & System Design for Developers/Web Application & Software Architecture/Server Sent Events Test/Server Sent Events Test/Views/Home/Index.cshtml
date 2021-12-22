@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<a href="javascript:initialize();" >Click Me To See Magic</a>  
+<div id="targetDiv"></div>  
+  
+<script>  
+      
+    function initialize() {  
+        alert("called");  
+  
+        if (window.EventSource == undefined) {  
+            // If not supported  
+            document.getElementById('targetDiv').innerHTML = "Your browser doesn't support Server Sent Events.";  
+            return;  
+        } else {  
+            var source = new EventSource('../Home/Message');  
+  
+            source.onopen = function (event) {  
+                document.getElementById('targetDiv').innerHTML += 'Connection Opened.<br>';  
+            };  
+  
+            source.onerror = function (event) {  
+                if (event.eventPhase == EventSource.CLOSED) {  
+                    document.getElementById('targetDiv').innerHTML += 'Connection Closed.<br>';  
+                }  
+            };  
+  
+            source.onmessage = function (event) {  
+                document.getElementById('targetDiv').innerHTML += event.data + '<br>';  
+            };  
+        }  
+    }  
+</script> 
